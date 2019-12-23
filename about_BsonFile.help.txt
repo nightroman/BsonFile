@@ -1,0 +1,40 @@
+TOPIC
+    about_BsonFile
+
+SHORT DESCRIPTION
+    BSON/JSON file collections in MongoDB
+
+LONG DESCRIPTION
+    The module works with documents stored in .bson and .json files. An empty
+    file may be used to start. Use the following mudule commands:
+
+        Open-BsonFile
+        Save-BsonFile
+        Close-BsonFile
+        Clear-BsonFile
+
+    Open-BsonFile creates a temporary local collection, imports the file, and
+    connects the collection like Connect-Mdbc does. If the file collection is
+    imported before and the file is not changed then import is skipped.
+
+    The collection is used for quires and updates. After updates use the
+    command Save-BsonFile in order to save changes to the original file.
+
+    The collection may be kept for future work or removed by Close-BsonFile.
+
+    Use Clear-BsonFile to remove orphan, old, or all BsonFile collections.
+
+REQUIREMENTS
+    - Local MongoDB with the default connection
+    - Mdbc module https://www.powershellgallery.com/packages/Mdbc
+
+TECH DETAILS
+    Database: "BsonFile"
+    Collections: "_index" and "<guid>" file collections
+
+    These names should not be "known" or used directly, BsonFile commands
+    operate either on file paths or their connected collection instances.
+
+SEE ALSO
+    README https://github.com/nightroman/BsonFile/blob/master/README.md
+    Release Notes https://github.com/nightroman/BsonFile/blob/master/Release-Notes.md
