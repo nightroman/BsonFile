@@ -6,7 +6,7 @@ SHORT DESCRIPTION
 
 LONG DESCRIPTION
     The module works with documents stored in .bson and .json files. An empty
-    file may be used to start. Use the following mudule commands:
+    file may be used to start. Use the following module commands:
 
         Open-BsonFile
         Save-BsonFile

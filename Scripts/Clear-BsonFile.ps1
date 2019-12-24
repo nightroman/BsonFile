@@ -34,13 +34,19 @@ function Clear-BsonFile {
 			Remove-MdbcCollection $info._id
 			$info | Remove-MdbcData
 		}
-		# old collection
+		# all collections
+		elseif ($AllCollections) {
+			Write-Verbose "Removing data of $($info.Path)"
+			Remove-MdbcCollection $info._id
+			$info | Remove-MdbcData
+		}
+		# old collections
 		elseif ($CollectionAge -gt [TimeSpan]::Zero) {
 			$diff = [DateTime]::UtcNow - $info.SyncTime
 			if ($diff -gt $CollectionAge) {
 				Write-Verbose "Removing old $($diff) data of $($info.Path)"
-				$info | Remove-MdbcData
 				Remove-MdbcCollection $info._id
+				$info | Remove-MdbcData
 			}
 		}
 	}
