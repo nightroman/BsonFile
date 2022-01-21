@@ -3,32 +3,32 @@
 	Build script (https://github.com/nightroman/Invoke-Build)
 #>
 
-Set-StrictMode -Version 2
+Set-StrictMode -Version Latest
 $ModuleName = 'BsonFile'
 
 # Synopsis: Remove temp files.
-task Clean {
+task clean {
 	remove z
 }
 
 # Synopsis: Test in the current PowerShell.
-task Test {
+task test {
 	$ErrorView = 'NormalView'
 	Invoke-Build ** Tests
 }
 
-# Synopsis: Test in PowerShell Core.
-task Test6 -If $env:powershell6 {
-	exec {& $env:powershell6 -NoProfile -Command Invoke-Build Test}
+# Synopsis: Test in PS Core.
+task test7 {
+	exec {pwsh -NoProfile -Command Invoke-Build Test}
 }
 
 # Synopsis: Set $script:Version.
-task Version {
+task version {
 	($script:Version = switch -Regex -File Release-Notes.md {'##\s+v(\d+\.\d+\.\d+)' {$Matches[1]; break} })
 }
 
 # Synopsis: Make the package in z\$ModuleName.
-task Package Version, {
+task package version, {
 	remove z
 	$null = mkdir z\$ModuleName\Scripts
 
@@ -40,7 +40,7 @@ task Package Version, {
 		"about_$ModuleName.help.txt"
 		"$ModuleName.psd1"
 		"$ModuleName.psm1"
-		'LICENSE.txt'
+		'LICENSE'
 	)
 
 	# set module version
@@ -51,10 +51,10 @@ task Package Version, {
 }
 
 # Synopsis: Make and push the PSGallery package.
-task PushPSGallery Package, {
+task pushPSGallery package, {
 	$NuGetApiKey = Read-Host NuGetApiKey
 	Publish-Module -Path z\$ModuleName -NuGetApiKey $NuGetApiKey
 },
-Clean
+clean
 
-task . Test, Test6
+task . test, test7
